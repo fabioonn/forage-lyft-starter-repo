@@ -1,0 +1,31 @@
+import unittest
+from datetime import date, timedelta
+from battery.spindler_battery import SpindlerBattery
+from battery.nubbin_battery import NubbinBattery
+
+class TestBattery(unittest.TestCase):
+    def setUp(self):
+        self.today = date.today()
+
+    def test_spindler_battery_needs_service(self):
+        last_service_date = self.today - timedelta(days=1096)  # 3 years ago
+        battery = SpindlerBattery(last_service_date, self.today)
+        self.assertTrue(battery.needs_service())
+
+    def test_spindler_battery_does_not_need_service(self):
+        last_service_date = self.today - timedelta(days=365)  # 1 year ago
+        battery = SpindlerBattery(last_service_date, self.today)
+        self.assertFalse(battery.needs_service())
+
+    def test_nubbin_battery_needs_service(self):
+        last_service_date = self.today - timedelta(days=1461)  # 4 years ago
+        battery = NubbinBattery(last_service_date, self.today)
+        self.assertTrue(battery.needs_service())
+
+    def test_nubbin_battery_does_not_need_service(self):
+        last_service_date = self.today - timedelta(days=1095)  # 3 years ago
+        battery = NubbinBattery(last_service_date, self.today)
+        self.assertFalse(battery.needs_service())
+
+if __name__ == '__main__':
+    unittest.main()
