@@ -1,0 +1,44 @@
+import unittest
+from datetime import date
+from engine.capulet_engine import CapuletEngine
+from engine.willoughby_engine import WilloughbyEngine
+from engine.sternman_engine import SternmanEngine
+
+class TestEngine(unittest.TestCase):
+    def setUp(self):
+        self.today = date.today()
+
+    def test_capulet_engine_needs_service(self):
+        last_service_mileage = 30000
+        current_mileage = 60001
+        engine = CapuletEngine(last_service_mileage, current_mileage)
+        self.assertTrue(engine.needs_service())
+
+    def test_capulet_engine_does_not_need_service(self):
+        last_service_mileage = 30000
+        current_mileage = 60000
+        engine = CapuletEngine(last_service_mileage, current_mileage)
+        self.assertFalse(engine.needs_service())
+
+    def test_willoughby_engine_needs_service(self):
+        last_service_mileage = 60000
+        current_mileage = 120001
+        engine = WilloughbyEngine(last_service_mileage, current_mileage)
+        self.assertTrue(engine.needs_service())
+
+    def test_willoughby_engine_does_not_need_service(self):
+        last_service_mileage = 60000
+        current_mileage = 120000
+        engine = WilloughbyEngine(last_service_mileage, current_mileage)
+        self.assertFalse(engine.needs_service())
+
+    def test_sternman_engine_needs_service(self):
+        engine = SternmanEngine(warning_light_is_on=True)
+        self.assertTrue(engine.needs_service())
+
+    def test_sternman_engine_does_not_need_service(self):
+        engine = SternmanEngine(warning_light_is_on=False)
+        self.assertFalse(engine.needs_service())
+
+if __name__ == '__main__':
+    unittest.main()
